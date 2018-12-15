@@ -5,7 +5,7 @@ import threading
 import queue
 import time
 import random
-from dataclasses import dataclass, field
+# from dataclasses import dataclass, field
 
 
 def producer(data_queue):
