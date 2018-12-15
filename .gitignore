@@ -1,0 +1,15 @@
+.idea
+__pycache__
+.git
+env
+*.json
+*.png
+*.svg
+*.html
+*.xlsx
+*.csv
+*.txt
+*.jpg
+*.html
+*.docx
+*.jpeg
