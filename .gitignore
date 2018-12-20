@@ -13,3 +13,4 @@ env
 *.html
 *.docx
 *.jpeg
+.vscode
