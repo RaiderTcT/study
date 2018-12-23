@@ -65,14 +65,14 @@ def main():
     # loop.run_until_complete(asyncio.wait(tasks))
     # print(loop.is_running())
     # loop.close()
-    loop = asyncio.get_event_loop() # 1创建事件循环
+    loop = asyncio.get_event_loop()  # 1创建事件循环
     _163 = 'www.163.com'
     doc_py = 'docs.python.org'
     baidu = 'www.baidu.com'
     sina = 'www.sina.com'
     tasks = [web_get(host) for host in [doc_py, baidu, _163, sina]]
-    loop.run_until_complete(asyncio.wait(tasks)) # 2 "阻塞"直到所有的tasks完成
-    loop.close() # 3 关闭循环
+    loop.run_until_complete(asyncio.wait(tasks))  # 2 "阻塞"直到所有的tasks完成
+    loop.close()  # 3 关闭循环
 
 
 if __name__ == "__main__":
