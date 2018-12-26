@@ -5,6 +5,7 @@
 class LinkedListUnderflow(ValueError):
     pass
 
+
 # 结点
 class LNode:
     def __init__(self, elem, next_=None):
@@ -103,6 +104,12 @@ class LList:
             yield p.elem
             p = p.next
 
+    def nodes(self):
+        p = self._head
+        while p is not None:
+            yield p
+            p = p.next
+
     # 筛选出满足要求的所有数据，返回到一个generator中
     def filter(self, pred):
         p = self._head
@@ -140,7 +147,7 @@ class LList:
         else:
             if i >= self.count:
                 raise ValueError('x is not in LinkedList')
-            else: 
+            else:
                 j = 0
                 while j < i:
                     p = p.next
@@ -149,7 +156,7 @@ class LList:
 
 
 if __name__ == "__main__":
-    ld = list((1,2,3,4,5))
+    ld = list((1, 2, 3, 4, 5))
     print(ld)
     ld.remove(4)
     print(ld)

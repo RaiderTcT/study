@@ -71,4 +71,3 @@ if __name__ == "__main__":
     print('------------')
     lcl.prepend(123)
     lcl.printall()
-    

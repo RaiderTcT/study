@@ -1,4 +1,4 @@
-from linklist import LNode, LList
+from linkedlist import LNode, LList
 import unittest
 
 

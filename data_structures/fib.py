@@ -2,7 +2,6 @@
 #
 import time
 
-
 # n = 35 ,7.1s
 # 时间复杂度： O(1.6^n) 指数阶
 
@@ -11,7 +10,8 @@ def fib_1(n):
     if n < 2:
         return 1
     else:
-        return fib_1(n-1) + fib_1(n-2)
+        return fib_1(n - 1) + fib_1(n - 2)
+
 
 # n = 35, 0.2s
 # 时间复杂度 O(n) 线性阶
@@ -22,6 +22,7 @@ def fib_2(n):
     for k in range(1, n):
         f1, f2 = f2, f1 + f2
     return f2
+
 
 # 返回的是iterable 对象
 def fab(max):
