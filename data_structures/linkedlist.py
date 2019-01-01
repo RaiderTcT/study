@@ -104,12 +104,6 @@ class LList:
             yield p.elem
             p = p.next
 
-    def nodes(self):
-        p = self._head
-        while p is not None:
-            yield p
-            p = p.next
-
     # 筛选出满足要求的所有数据，返回到一个generator中
     def filter(self, pred):
         p = self._head
@@ -154,10 +148,70 @@ class LList:
                     j += 1
                 p.next = p.next.next
 
+    def reverse(self):
+        """
+        反转， 从表首开始取节点，插入另一个链表的首端 O(n)
+        """
+        p = None
+        while self._head is not None:
+            q = self._head
+            self._head = q.next
+            q.next = p
+            p = q
+        self._head = p
+
+    def sort_1(self):
+        """
+        插入法， 移动表中元素
+                 x
+        1234678  5
+        1234578  6
+        1234568  7
+        1234567  8
+        """
+        if self._head is None:
+            return
+        crt = self._head.next
+        while crt:
+            x = crt.elem
+            p = self._head
+            while p is not crt and p.elem <= x:
+                p = p.next
+            while p is not crt:  # 找到crt插入的位置
+                p.elem, x = x, p.elem  # 将crt元素插入该位置
+                p = p.next
+            crt.elem = x  # 回填最后一个元素
+            crt = crt.next
+
+    def sort_2(self):
+        p = self._head
+        if p is None or p.next is None:
+            return
+
+        rem = p.next  # 除head之外的节点段
+        p.next = None
+        while rem is not None:
+            p = self._head
+            q = None
+            while p is not None and p.elem < rem.elem:
+                q = p
+                p = p.next
+            if q is None:
+                self._head = rem
+            else:
+                q.next = rem
+            q = rem
+            rem = rem.next
+            q.next = p
+
 
 if __name__ == "__main__":
-    ld = list((1, 2, 3, 4, 5))
-    print(ld)
-    ld.remove(4)
-    print(ld)
-    # 插入 2 3之间
+    import random
+    l1 = LList()
+    for i in range(1, 10):
+        l1.append(random.randint(1, 100))
+    l1.printall()
+    l1.reverse()
+    l1.printall()
+    l1.sort_2()
+    l1.printall()

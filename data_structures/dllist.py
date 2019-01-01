@@ -11,6 +11,9 @@ class DLNode:
         self.prev = prev
         self.next = next
 
+    def __repr__(self):
+        return self.elem
+
 
 class DLList(LList1):
     def __init__(self):
@@ -59,12 +62,20 @@ class DLList(LList1):
         return e
 
     def reverse(self):
+        """
+        反转双向链表， 将每个节点的prev和next交换
+        """
         if self._head is None:
             raise LinkedListUnderflow(" empty linked list")
-        nodes = self.nodes()
-        for node in nodes:
-            node.prev, node.next = node.next, node.prev
-        # self._head, self._rear = self._rear, self._head
+
+        node = self._head
+        head = self._rear
+        self._rear = node
+        while node:
+            next_node = node.next
+            node.next, node.prev = node.prev, node.next
+            node = next_node
+        self._head = head
 
 
 if __name__ == "__main__":
@@ -76,9 +87,9 @@ if __name__ == "__main__":
     for i in range(10):
         mlist1.append(random.randint(1, 20))
     mlist1.printall()
-    for x in mlist1.filter(lambda x: x % 2 == 0):
-        print(x)
-    print(mlist1.count)
+    # for x in mlist1.filter(lambda x: x % 2 == 0):
+    #     print(x)
+    # print(mlist1.count)
 
     mlist1.reverse()
     mlist1.printall()
