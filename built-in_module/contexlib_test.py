@@ -34,7 +34,7 @@ class Query_new:
 @contextmanager
 def create_query(name):
     print('Begin')
-    q = Query(name)
+    q = Query_new(name)
     yield q
     print('End')
 
@@ -54,6 +54,6 @@ if __name__ == "__main__":
     with tag('html'):
         print('hello')
         print("world")
-    with closing(urlopen('https://www.python.org')) as page:
-        for line in page:
-            print(line)
+    # with closing(urlopen('https://www.python.org')) as page:
+    #     for line in page:
+    #         print(line)
