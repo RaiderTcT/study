@@ -1,7 +1,7 @@
 """
 带尾节点引用的单链表
 """
-from linkedlist import LList, LNode, LinkedListUnderflow
+from data_structures.linklist.linkedlist import LList, LNode, LinkedListUnderflow
 
 
 class LList1(LList):
