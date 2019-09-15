@@ -1,7 +1,7 @@
 """
 双链表
 """
-from linkedlist_1 import LList1, LinkedListUnderflow
+from data_structures.linklist.linkedlist_1 import LList1, LinkedListUnderflow
 
 
 class DLNode:
