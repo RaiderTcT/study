@@ -1,22 +1,24 @@
 """ 公路收费站模拟，队列和优先队列的应用
 """
-
 from random import randint
 from data_structures.tree.prioqueue import PrioQueue  # , PrioQueueError
 from data_structures.stack_queue._queue import SQueue  # , QueueUnderflow
+# 按事件发生的时间顺序处理。在模拟系统里用一个优先队列保存已知在将来
+# 某些特定时刻发生的事件，系统运行-> 从优先队列中取等待事件处理
+# 系统始终维护着一个当前时间（当时正在发生的事件的时间）
 
 
 class Simulation:
     def __init__(self, duration):
-        self._eventq = PrioQueue()
+        self._eventq = PrioQueue()  # 根据事件发生的时间 优先处理
         self._time = 0
-        self._duration = duration
+        self._duration = duration  # 模拟时间总长
 
     def run(self):
-        while not self._eventq.is_empty():
+        while not self._eventq.is_empty():  # 模拟到事件队列为空
             event = self._eventq.dequeue()
-            self._time = event.time()
-            if self._time > self._duration:
+            self._time = event.time()  # 事件的时间就是当前时间
+            if self._time > self._duration:  # 模拟时间用完，结束
                 break
             event.run()  # may cause new event(s)
 
@@ -27,12 +29,13 @@ class Simulation:
         return self._time
 
 
-class Event:
-    def __init__(self, event_time, host):
+class Event:  # 面向对象的离散事件
+    def __init__(self, event_time, host):  # 事件发生的时间(到达时间，离开时间)
         self._ctime = event_time
         self._host = host
 
     def __lt__(self, other_event):
+        # 优先级比较 定义优先队列时 用的< 进行比较
         return self._ctime < other_event._ctime
 
     def __le__(self, other_event):
@@ -47,13 +50,29 @@ class Event:
     def run(self):
         pass
 
+# 海关检查站模拟系统
+# 模拟一个通行方向的检查， 每a-b分有一辆车到达，有k条检查通道，
+# 检查一辆车需要c-d分，到达车辆会在一个专用通道上等待，有空闲通道时，
+# 正在排队的第一辆车会进入这个检查通道。如果车辆到达时，有空闲通道，
+# 且没有等待车辆，立即进入通道检查。
+# 要得到的数据：车辆的平均等待时间和通过检查站的平均时间
+
+# 模拟类
 
 class Customs:
     def __init__(self, gate_num, duration, arrive_interval, check_interval):
-        self.simulation = Simulation(duration)
-        self.waitline = SQueue()
+        """模拟检查
+
+        Args:
+            gate_num (int): 通道数量
+            duration (int): 总模拟时间
+            arrive_interval (tuple): 每辆车到达的时间间隔
+            check_interval (tuple): 一辆车的检查时间
+        """
+        self.simulation = Simulation(duration)  # 模拟类
+        self.waitline = SQueue()  # 车辆等待队列
         self.duration = duration
-        self.gates = [0] * gate_num
+        self.gates = [0] * gate_num  # 0 空闲 1 占用
         self.total_wait_time = 0
         self.total_used_time = 0
         self.car_num = 0
