@@ -9,6 +9,7 @@
 from data_structures.tree.binary_tree import print_BinTNodes
 from data_structures.tree.binary_tree import BinTNode
 from data_structures.tree.prioqueue import PrioQueue
+from data_structures.stack_queue.stack import SStack
 """
 带权扩充二叉树外部路径长度
 WPL=∑ wi*li, wi是外部节点i的权
@@ -53,6 +54,34 @@ def HuffmanTree(weights):
     return trees.dequeue()
 
 
+def huffman_encode(str_dic):
+    def get_leaves(t):
+        s = SStack()
+        encode_char = ''
+        while t is not None or not s.is_empty():
+            while t is not None:
+                encode_char += t.encode_char
+                character = t.character
+                s.push((t.right, encode_char))
+                t = t.left
+                if t is None:
+                    yield character, encode_char
+                    encode_char = ''
+            t, encode_char = s.pop()
+
+    trees = HuffmanPrioQueue()
+    for key, value in str_dic.items():
+        trees.enqueue(HTNode(value, None, None, key, ''))
+    while trees.number() > 1:
+        t1 = trees.dequeue()
+        t2 = trees.dequeue()
+        t1.encode_char = '0'
+        t2.encode_char = '1'
+        x = t1.data + t2.data
+        trees.enqueue(HTNode(x, t1, t2))
+    yield from get_leaves(trees.dequeue())
+ 
+  
 if __name__ == '__main__':
 
     t = BinTNode(1, BinTNode(2), BinTNode(3))
@@ -61,5 +90,16 @@ if __name__ == '__main__':
 
     h = HuffmanTree([2, 3, 7, 10, 4, 2, 5])
     print_BinTNodes(h)
-
+    print()
+    temp_dict = {
+        'a': 2,
+        'b': 3,
+        'c': 7,
+        'd': 4,
+        'e': 10,
+        'f': 2,
+        'h': 5
+    }
+    for char, encode_char in huffman_encode(temp_dict):
+        print(f"{char}: {encode_char}")
     pass
