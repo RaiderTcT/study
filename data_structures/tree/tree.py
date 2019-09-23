@@ -4,14 +4,14 @@
 @Author: Ulysses
 @Date: 2019-09-23 10:05:20
 @Description: 使用list来实现树tree, Tree类
-@LastEditTime: 2019-09-23 11:25:35
+@LastEditTime: 2019-09-23 19:45:01
 '''
-from itertools import chain
 # 树结点由2部分组成：结点本身数据以及一组子树
 
 
 class SubtreeIndexError(ValueError):
     pass
+
 
 def tree(data, *subtrees):
     """使用python的list嵌套结构"""
@@ -19,25 +19,30 @@ def tree(data, *subtrees):
     l.extend(subtrees)
     return l
 
+
 def is_empty_Tree(tree):
     return tree is None
+
 
 def subtree(tree, i):
     """获取第i棵子树"""
     if i < 1 or i > len(tree):
         raise SubtreeIndexError
-    return tree[i+1]
+    return tree[i + 1]
+
 
 def root(tree):
     return tree[0]
 
+
 def set_root(tree, data):
     tree[0] = data
+
 
 def set_subtree(tree, i, subtree):
     if i < 1 or i > len(tree):
         raise SubtreeIndexError
-    tree[i+1] = subtree
+    tree[i + 1] = subtree
 
 
 class TreeNode:
