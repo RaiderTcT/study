@@ -4,12 +4,14 @@
 @Author: Ulysses
 @Date: 2019-09-24 09:01:00
 @Description: 图的基本实现
-@LastEditTime: 2019-09-24 14:09:24
+@LastEditTime: 2019-09-24 19:21:38
 '''
 from collections import defaultdict
 
+
 class GraphError(TypeError):
     pass
+
 
 inf = float("inf")  # 无穷大，表示无
 
@@ -86,9 +88,7 @@ class GraphAL(Graph):
             if len(x) != vnum:
                 raise ValueError("mat需要为方阵")
         # [每个顶点的出边表]
-        self._mat = [
-            Graph._out_edges(mat[i], un_conn) for i in range(vnum)
-        ]
+        self._mat = [Graph._out_edges(mat[i], un_conn) for i in range(vnum)]
         self._vnum = vnum
         self._unconn = un_conn
 
@@ -130,6 +130,7 @@ class GraphAL(Graph):
             raise GraphError(f"不合法的顶点 {vi}")
         return self._mat[vi]
 
+
 # dict 形式表示
 class GraphDict(Graph):
     def __init__(self, mat, un_conn=0):
@@ -166,7 +167,7 @@ class GraphDict(Graph):
         return self._mat.get((vi, vj), None)
 
     def out_edges(self, vi):
-        if self._invalid(vi) :
+        if self._invalid(vi):
             raise GraphError(f"顶点{vi}为不合法的顶点")
         l = []
         for key, val in self._mat.items():
@@ -178,18 +179,10 @@ class GraphDict(Graph):
         return f"[\n" + ',\n'.join(map(str, self._mat.items())) + "\n]"\
             + "\nUnconnected: " + str(self._unconn)
 
+
 if __name__ == '__main__':
-    gmat1 = [
-        [0, 0, 1],
-        [1, 0, 1],
-        [0, 1, 0]
-    ]
-    gmat2 = [
-        [0, 1, 1, 0],
-        [1, 0, 1, 0],
-        [1, 1, 0, 1],
-        [0, 0, 1, 0]
-    ]
+    gmat1 = [[0, 0, 1], [1, 0, 1], [0, 1, 0]]
+    gmat2 = [[0, 1, 1, 0], [1, 0, 1, 0], [1, 1, 0, 1], [0, 0, 1, 0]]
     # 带权值
     gmat3 = [
         [0, inf, 6, 3, inf],
@@ -202,21 +195,21 @@ if __name__ == '__main__':
     g2 = Graph(gmat2)
     g3 = Graph(gmat3, inf)
     print(g1)
-# [
-# [0, 0, 1],
-# [1, 0, 1],
-# [0, 1, 0]
-# ]
-# Unconnected: 0
-    print("-"*30)
+    # [
+    # [0, 0, 1],
+    # [1, 0, 1],
+    # [0, 1, 0]
+    # ]
+    # Unconnected: 0
+    print("-" * 30)
     print(g2)
-# [
-# [0, 1, 1, 0],
-# [1, 0, 1, 0],
-# [1, 1, 0, 1],
-# [0, 0, 1, 0]
-# ]
-# Unconnected: 0
+    # [
+    # [0, 1, 1, 0],
+    # [1, 0, 1, 0],
+    # [1, 1, 0, 1],
+    # [0, 0, 1, 0]
+    # ]
+    # Unconnected: 0
     for edge in g2.out_edges(0):  # a点 出表
         print(edge)
 # (1, 1)
@@ -228,68 +221,68 @@ if __name__ == '__main__':
 # (1, 1)
 # (2, 1)
 # (3, 1)
-    print("-"*30)
+    print("-" * 30)
     for edge in g3.out_edges(2):  # c 出表
         print(edge)
 # (1, 3)
 # (2, 0)
 # (4, 5)
-    print("-"*30)
+    print("-" * 30)
     gal3 = GraphAL(gmat3, inf)
     print(gal3)
-# [
-# [(0, 0), (2, 6), (3, 3)],
-# [(0, 11), (1, 0), (2, 4)],
-# [(1, 3), (2, 0), (4, 5)],
-# [(3, 0), (4, 5)],
-# [(4, 0)]
-# ]
+    # [
+    # [(0, 0), (2, 6), (3, 3)],
+    # [(0, 11), (1, 0), (2, 4)],
+    # [(1, 3), (2, 0), (4, 5)],
+    # [(3, 0), (4, 5)],
+    # [(4, 0)]
+    # ]
     gal3.add_edge(0, 2, inf)  # 删去 a -> c
     print(gal3)
-# [
-# [(0, 0), (3, 3)],
-# [(0, 11), (1, 0), (2, 4)],
-# [(1, 3), (2, 0), (4, 5)],
-# [(3, 0), (4, 5)],
-# [(4, 0)]
-# ]
+    # [
+    # [(0, 0), (3, 3)],
+    # [(0, 11), (1, 0), (2, 4)],
+    # [(1, 3), (2, 0), (4, 5)],
+    # [(3, 0), (4, 5)],
+    # [(4, 0)]
+    # ]
     gal3.add_edge(0, 4, 3)  # 添加 a -> e
     print(gal3)
-# [
-# [(0, 0), (3, 3), (4, 3)],
-# [(0, 11), (1, 0), (2, 4)],
-# [(1, 3), (2, 0), (4, 5)],
-# [(3, 0), (4, 5)],
-# [(4, 0)]
-# ]
+    # [
+    # [(0, 0), (3, 3), (4, 3)],
+    # [(0, 11), (1, 0), (2, 4)],
+    # [(1, 3), (2, 0), (4, 5)],
+    # [(3, 0), (4, 5)],
+    # [(4, 0)]
+    # ]
     gal3.add_vertex()  # 添加顶点f
     gal3.add_edge(1, 5, 3)  # b -> f
     gal3.add_edge(5, 2, 7)  # f -> c
     gal3.add_edge(5, 4, 10)  # f -> e
     print(gal3.out_edges(1))
     print(gal3.out_edges(5))
-# [(0, 11), (1, 0), (2, 4), (5, 3)]
-# [(2, 7), (4, 10)]
+    # [(0, 11), (1, 0), (2, 4), (5, 3)]
+    # [(2, 7), (4, 10)]
 
-    print("-"*30)
+    print("-" * 30)
     g3_dict = GraphDict(gmat3, inf)
     print(g3_dict)
-# [
-# ((0, 0), 0),
-# ((0, 2), 6),
-# ((0, 3), 3),
-# ((1, 0), 11),
-# ((1, 1), 0),
-# ((1, 2), 4),
-# ((2, 1), 3),
-# ((2, 2), 0),
-# ((2, 4), 5),
-# ((3, 3), 0),
-# ((3, 4), 5),
-# ((4, 4), 0)
-# ]
+    # [
+    # ((0, 0), 0),
+    # ((0, 2), 6),
+    # ((0, 3), 3),
+    # ((1, 0), 11),
+    # ((1, 1), 0),
+    # ((1, 2), 4),
+    # ((2, 1), 3),
+    # ((2, 2), 0),
+    # ((2, 4), 5),
+    # ((3, 3), 0),
+    # ((3, 4), 5),
+    # ((4, 4), 0)
+    # ]
     print(g3_dict.out_edges(2))  # c出表
-# [(1, 3), (2, 0), (4, 5)]
+    # [(1, 3), (2, 0), (4, 5)]
     g3_dict.add_vertex()
     g3_dict.add_edge(5, 2, 3)
     g3_dict.add_edge(5, 4, 7)

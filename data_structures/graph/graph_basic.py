@@ -4,11 +4,11 @@
 @Author: Ulysses
 @Date: 2019-09-24 14:35:31
 @Description: Depth-First Search遍历图中顶点和生成树
-@LastEditTime: 2019-09-24 17:25:29
+@LastEditTime: 2019-09-24 19:24:12
 '''
 from data_structures.graph.graph import GraphAL, inf
 from data_structures.stack_queue.stack import SStack
-from data_structures.stack_queue._quque import SQueue
+from data_structures.stack_queue._queue import SQueue
 
 
 # 复杂度分析构造visited 和 dfs_seq表，时间复杂度O(|V|)
@@ -28,12 +28,13 @@ def dfs_graph(graph, v0):
         i, edges = st.pop()
         if i < len(edges):
             vertex, _ = edges[i]
-            st.push((i+1, edges))  # 下一个 当前顶点 能够访问的顶点
+            st.push((i + 1, edges))  # 下一个 当前顶点 能够访问的顶点
             if not visited[vertex]:
                 dfs_seq.append(vertex)
                 visited[vertex] = 1
                 st.push((0, graph.out_edges(vertex)))  # 下一个顶点 能访问的顶点
     return dfs_seq
+
 
 def bfs_graph(graph, v0):
     vnum = graph.vertex_num()
@@ -43,11 +44,11 @@ def bfs_graph(graph, v0):
     yield v0
     q = SQueue()
     q.put((0, graph.out_edges(v0)))
-    while  not q.is_empty():
+    while not q.is_empty():
         i, edges = q.get()
         if i < len(edges):
             vertex, _ = edges[i]
-            q.put((i+1, edges))
+            q.put((i + 1, edges))
             if not visited[vertex]:
                 visited[vertex] = 1
                 yield vertex
@@ -55,9 +56,11 @@ def bfs_graph(graph, v0):
                 q.put((0, graph.out_edges(vertex)))
     # return bfs_seq
 
+
 # 构造DFS生成树，路径上每个顶点只需要记录它的前移一个顶点信息
 def dfs_span_forest(graph):
     pass
+
 
 if __name__ == "__main__":
     gmat1 = [
