@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-09-24 14:35:31
 @Description: Depth-First Search遍历图中顶点和生成树
-@LastEditTime: 2019-09-26 17:00:33
+@LastEditTime: 2019-09-27 09:23:55
 '''
 from data_structures.graph.graph import GraphAL, inf
 from data_structures.stack_queue.stack import SStack
@@ -90,6 +90,24 @@ def dfs_span_forest(graph):
             dfs(graph, v)
     return span_forest
 
+
+def dfs_span_forest_nonrec(graph):
+    """非递归 堆栈 DFS 生成树"""
+    vnum = graph.vertex_num()
+    span_forest = [None] * vnum
+    st = SStack()
+    st.push((0, 0, graph.out_edges(0)))  # (当前顶点，第几条出边,当前顶点的出边表)
+    while not st.is_empty():
+        v, i, edges = st.pop()
+        if i < len(edges):
+            st.push((v, i + 1, edges))  # 回来访问V的下一个邻接顶点
+            u, w = edges[i][0], edges[i][1]
+            if span_forest[u] is None:
+                span_forest[u] = (v, w)
+                # 下一次从V的邻接顶点开始深度优先搜寻
+                st.push((u, 0, graph.out_edges(u)))
+    return span_forest
+
 def bfs_span_forest(graph):
     # 宽度优先
     vnum = graph.vertex_num()
@@ -112,6 +130,18 @@ def bfs_span_forest(graph):
             bfs(graph, v)
     return span_forest
 
+def bfs_span_forest_nonrec(graph):
+    vnum = graph.vertex_num()
+    span_forest = [None] * vnum
+    q = SQueue()
+    q.put((0, graph.out_edges(0)))
+    while not q.is_empty():
+        v, edges = q.get()
+        for u, w in edges:
+            if span_forest[u] is None:
+                span_forest[u] = (v, w)
+                q.put((u, graph.out_edges(u)))
+    return span_forest
 
 if __name__ == "__main__":
     gmat1 = [
@@ -136,6 +166,9 @@ if __name__ == "__main__":
     print()
 
 # 深度优先 生成树
+    for i in dfs_span_forest_nonrec(g1):
+        print(i)
+    print()
     for i in dfs_span_forest(g1):
         print(i)
 # (0, 0)  a->a
@@ -148,9 +181,12 @@ if __name__ == "__main__":
 #      c   d
 #    3/ \5
 #    b   e
-    print()
+    print("-"*30)
 
 # 宽度优先 生成树
+    for i in bfs_span_forest_nonrec(g1):
+        print(i)
+    print()
     for i in bfs_span_forest(g1):
         print(i)
 # (0, 0)  a->a
