@@ -4,9 +4,11 @@
 @Author: Ulysses
 @Date: 2019-09-27 09:34:17
 @Description: 最小生成树，Kruskal算法
-@LastEditTime: 2019-09-27 14:52:35
+@LastEditTime: 2019-10-01 10:16:28
 '''
 from data_structures.graph.graph import GraphAL, inf
+from data_structures.tree.prioqueue import PrioQueue
+
 
 def kruskal(graph):
     """
@@ -38,17 +40,46 @@ def kruskal(graph):
     return mst
 
 
+def prim(graph):
+    """
+    MST性质: G = (V, E), 令U为V的真子集,有e=(u, v)∈E,且u∈U, v∈V-U, e为所有一个
+    端点在U,另一个端点在V-U中的边中权值最小.那么G中必定有一棵包括边e的最小生成树
+    1:
+    """
+    vnum = graph.vertex_num()
+    mst = [None] * vnum
+    # 候选边(w, vi, vj)
+    cands = PrioQueue([(0, 0, 0)])  # 初始顶点0到自身, 边长为0
+    count = 0
+    while count < vnum and not cands.is_empty():
+        w, u, v = cands.dequeue()  # 取当前最短边
+        if mst[v]:
+            continue  # 顶点v已在T内 寻找其他边
+        mst[v] = ((u, v), w)  # 记录新的mst边和顶点
+        count += 1
+        for vi, w in graph.out_edges(v):  # 考虑v的邻接顶点构成的边
+            if not mst[vi]:  # 不在mst的是候选边, (u, v)加入mst时,排除v的
+                # 邻接边 (v, u)
+                cands.enqueue((w, v, vi))
+    return mst
+
+
 if __name__ == "__main__":
     gmat = [
-        [0,   5,   11,  5,   inf, inf,  inf],
-        [5,   0,   inf, 3,   9,   inf,  7],
-        [11,  inf, 0,   7,   inf, 6,    inf],
-        [5,   3,   7,   0,   inf, inf,  20],
-        [inf, 9,   inf, inf, 0,   inf,  8],
-        [inf, inf, 6,   inf, inf, 0,    8],
-        [inf, 7,   inf, inf, inf, 8,    0],
+        [0, 5, 11, 5, inf, inf, inf],
+        [5, 0, inf, 3, 9, inf, 7],
+        [11, inf, 0, 7, inf, 6, inf],
+        [5, 3, 7, 0, inf, inf, 20],
+        [inf, 9, inf, inf, 0, inf, 8],
+        [inf, inf, 6, inf, inf, 0, 8],
+        [inf, 7, inf, inf, 8, 8, 0],
     ]
     g = GraphAL(gmat, inf)
+
     mst = kruskal(g)
+    for item in mst:
+        print(item)
+    print("=" * 30)
+    mst = prim(g)
     for item in mst:
         print(item)
