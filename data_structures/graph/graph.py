@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-09-24 09:01:00
 @Description: 图的基本实现
-@LastEditTime: 2019-09-24 19:21:38
+@LastEditTime: 2019-10-01 14:59:30
 '''
 from collections import defaultdict
 
@@ -120,7 +120,7 @@ class GraphAL(Graph):
     def get_edge(self, vi, vj):
         if self._invalid(vi) or self._invalid(vj):
             raise GraphError(f"顶点{vi} 或者 {vj}为不合法的顶点")
-        for i, val in self._mat(vi):
+        for i, val in self._mat[vi]:
             if i == vj:
                 return val
         return self._unconn

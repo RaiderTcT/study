@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-09-27 09:34:17
 @Description: 最小生成树，Kruskal算法
-@LastEditTime: 2019-10-01 10:16:28
+@LastEditTime: 2019-10-02 09:19:05
 '''
 from data_structures.graph.graph import GraphAL, inf
 from data_structures.tree.prioqueue import PrioQueue
@@ -44,7 +44,11 @@ def prim(graph):
     """
     MST性质: G = (V, E), 令U为V的真子集,有e=(u, v)∈E,且u∈U, v∈V-U, e为所有一个
     端点在U,另一个端点在V-U中的边中权值最小.那么G中必定有一棵包括边e的最小生成树
-    1:
+    1. 初始(0, 0, 0)放入优先队列
+    2. 将顶点0加入U,再把顶点0到其余顶点的边按权值存入优先队列
+    3. 从优先队列中选择最短边,若两端分别在U和V-U就加入mst,否则丢弃
+    时间复杂度: 初始化O(V), 循环内执行不超过|V|次,优先队列出入队不超过|E|次, O(|E|log|E|)
+    空间复杂度: mst表和优先队列O(|V|)和O(|E|), 总复杂度O(|E|)
     """
     vnum = graph.vertex_num()
     mst = [None] * vnum
@@ -75,7 +79,7 @@ if __name__ == "__main__":
         [inf, 7, inf, inf, 8, 8, 0],
     ]
     g = GraphAL(gmat, inf)
-
+    print([[g.get_edge(0, v), v, 0]for v in range(g.vertex_num())])
     mst = kruskal(g)
     for item in mst:
         print(item)
