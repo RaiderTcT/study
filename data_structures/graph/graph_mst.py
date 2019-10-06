@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-09-27 09:34:17
 @Description: 最小生成树，Kruskal算法
-@LastEditTime: 2019-10-02 09:19:05
+@LastEditTime: 2019-10-02 09:30:36
 '''
 from data_structures.graph.graph import GraphAL, inf
 from data_structures.tree.prioqueue import PrioQueue
@@ -35,7 +35,7 @@ def kruskal(graph):
                 break
             rep, orep = reps[vi], reps[vj]  # 2端顶点代表元 rep - orep
             for i in range(vnum):  # 合并连同分量，统一代表元
-                if reps[i] == orep:  #  rep - rep - orep
+                if reps[i] == orep:  # rep - rep - orep
                     reps[i] = rep  # rep - rep - rep
     return mst
 
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         [inf, 7, inf, inf, 8, 8, 0],
     ]
     g = GraphAL(gmat, inf)
-    print([[g.get_edge(0, v), v, 0]for v in range(g.vertex_num())])
+    print([[g.get_edge(0, v), v, 0] for v in range(g.vertex_num())])
     mst = kruskal(g)
     for item in mst:
         print(item)

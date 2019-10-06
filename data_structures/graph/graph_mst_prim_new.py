@@ -12,13 +12,14 @@ from data_structures.graph.graph import GraphAL, inf
 
 class DecPrioHeap(PrioQueue):
     """减权堆"""
+
     def __init__(self, elist):
         self._elems = list(elist)
-        self._elems_1 = [None]*len(elist)
+        self._elems_1 = [None] * len(elist)
         if elist:
             self.buildheap()
             for i in range(len(self._elems)):
-                self._elems_1[self._elems[i][1]] =  self._elems[i]
+                self._elems_1[self._elems[i][1]] = self._elems[i]
 
     def getmin(self):
         e = self.dequeue()
@@ -35,7 +36,7 @@ class DecPrioHeap(PrioQueue):
         # e = self._elems[i]
         self._elems_1[ind] = e
         self._elems.append(None)
-        self.siftup(e, len(self._elems)-1)
+        self.siftup(e, len(self._elems) - 1)
 
 
 def prim(graph):
@@ -44,8 +45,8 @@ def prim(graph):
     """
     vnum = graph.vertex_num()
     wv_seq = [[graph.get_edge(0, v), v, 0] for v in range(vnum)]
-    connects = DecPrioHeap(wv_seq)    # record vertices
-    mst = [None]*vnum
+    connects = DecPrioHeap(wv_seq)  # record vertices
+    mst = [None] * vnum
     while not connects.is_empty():
         w, mv, u = connects.getmin()  # take nearest vertex and edge
         if w == inf:
@@ -55,6 +56,7 @@ def prim(graph):
             if not mst[v] and w < connects.weight(v):
                 connects.dec_weight(v, w, mv)
     return mst
+
 
 if __name__ == "__main__":
     gmat = [

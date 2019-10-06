@@ -10,6 +10,7 @@
 from dataclasses import dataclass, field
 from typing import Any
 
+
 @dataclass(order=True)  # 生成__eq__(), __lt__()等方法
 class PriorityItem:
     priority: int
@@ -23,6 +24,7 @@ class PrioQueueError(ValueError):
 class PrioQue:
     """ Implementing binary trees as sorted list
     """
+
     def __init__(self, elist=[]):
         self._elems = list(elist)
         self._elems.sort(reverse=True)  # 较小的值 优先级高， 在表尾
@@ -47,7 +49,7 @@ class PrioQue:
                 i -= 1
             else:
                 break
-        self._elems.insert(i+1, e)
+        self._elems.insert(i + 1, e)
 
     def show(self):  # only for test
         print(",".join(map(str, self._elems)))
@@ -62,6 +64,7 @@ class PrioQue:
 class PrioQueue:
     """ Implementing priority queues using heaps
     """
+
     def __init__(self, elist=[]):
         self._elems = list(elist)
         if elist:
@@ -77,7 +80,7 @@ class PrioQueue:
 
     def enqueue(self, e):
         self._elems.append(None)  # add a dummy element
-        self.siftup(e, len(self._elems)-1)
+        self.siftup(e, len(self._elems) - 1)
 
     def siftup(self, e, last):
         """
@@ -87,10 +90,10 @@ class PrioQueue:
             e (Any): 插入的值
             last (int): 最后一个元素下标
         """
-        elems, i, j = self._elems, last, (last-1)//2
+        elems, i, j = self._elems, last, (last - 1) // 2
         while i > 0 and e < elems[j]:
             elems[i] = elems[j]
-            i, j = j, (j-1)//2
+            i, j = j, (j - 1) // 2
         elems[i] = e
 
     def dequeue(self):
@@ -104,20 +107,20 @@ class PrioQueue:
         return e0
 
     def siftdown(self, e, begin, end):
-        elems, i, j = self._elems, begin, begin*2+1
-        while j < end:    # invariant: j == 2*i+1
-            if j+1 < end and elems[j+1] < elems[j]:
-                j += 1    # elems[j] <= its brother
-            if e < elems[j]:     # e is the smallest of the three
+        elems, i, j = self._elems, begin, begin * 2 + 1
+        while j < end:  # invariant: j == 2*i+1
+            if j + 1 < end and elems[j + 1] < elems[j]:
+                j += 1  # elems[j] <= its brother
+            if e < elems[j]:  # e is the smallest of the three
                 break
             elems[i] = elems[j]  # elems[j] is the smallest, move it up
-            i, j = j, 2*j+1
+            i, j = j, 2 * j + 1
         elems[i] = e
 
     def buildheap(self):
         # O(n)
         end = len(self._elems)
-        for i in range(end//2, -1, -1):  # 从最下最右的分支节点开始
+        for i in range(end // 2, -1, -1):  # 从最下最右的分支节点开始
             # 向左建堆，再向上一层建堆
             self.siftdown(self._elems[i], i, end)
 
@@ -125,21 +128,21 @@ class PrioQueue:
 def heap_sort(elems):
     def siftdown(elems, e, begin, end):
         """构造大顶堆"""
-        i, j = begin, begin*2+1
+        i, j = begin, begin * 2 + 1
         while j < end:  # invariant: j == 2*i+1
-            if j+1 < end and elems[j+1] > elems[j]:
+            if j + 1 < end and elems[j + 1] > elems[j]:
                 j += 1  # elems[j] >= its brother
-            if e > elems[j]:     # e is the biggest of the three
+            if e > elems[j]:  # e is the biggest of the three
                 break
             elems[i] = elems[j]  # elems[j] is the smallest, move it up
-            i, j = j, 2*j+1
+            i, j = j, 2 * j + 1
         elems[i] = e
 
     end = len(elems)
-    for i in range(end//2, -1, -1):
+    for i in range(end // 2, -1, -1):
         siftdown(elems, elems[i], i, end)
     # O(nlogn) 逐个取堆顶后，将其放在尾部，重新构造堆，再取堆顶
-    for i in range((end-1), 0, -1):
+    for i in range((end - 1), 0, -1):
         e = elems[i]
         elems[i] = elems[0]
         siftdown(elems, e, 0, i)
@@ -155,8 +158,6 @@ def test1():
     for i in range(12):
         pq.enqueue(randint(0, 30))
     pq.show()
-##    while not pq.is_empty():
-##        print(pq.dequeue())
 
 
 def test2():
@@ -174,6 +175,7 @@ def test3():
     print(lst)
     heap_sort(lst)
     print(lst)
+
 
 if __name__ == '__main__':
     test1()
