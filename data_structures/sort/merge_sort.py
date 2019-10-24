@@ -36,14 +36,22 @@ def merge(lfrom, lto, low, mid, high):
             lto[k] = lfrom[j]
             j += 1
         k += 1
-    while i < mid:  # 处理剩余的元素(剩下的是最大的值)
-        lto[k] = lfrom[i]
-        i += 1
-        k += 1
-    while j < high:
-        lto[k] = lfrom[j]
-        j += 1
-        k += 1
+    # 处理 剩余的元素（保留下的是最大的几个值）
+
+    # 第一段剩余，复制
+    # while i < mid:
+    #     lto[k] = lfrom[i]
+    #     i += 1
+    #     k += 1
+    # while j < high:
+    #     lto[k] = lfrom[j]
+    #     j += 1
+    #     k += 1
+
+    if i < mid:
+        lto[k:high] = lfrom[i:mid]
+    if j < high:
+        lto[k:high] = lfrom[j:high]
 
 
 def merge_pass(lfrom, lto, llen, slen):
