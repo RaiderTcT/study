@@ -51,6 +51,27 @@ def quick_rec(lst, left, right):
     quick_rec(lst, left, i - 1)
     quick_rec(lst, i + 1, right)
 
+def quick_sort_2(lst):
+    """
+    R |<=R | >=R |????
+           i     j
+    """
+    def qsort(lst, begin, end):
+        if begin >= end:
+            return
+        pivot = lst[begin]
+        i = begin
+        for j in range(begin + 1, end + 1):
+            if lst[j] < pivot:  # 把比pivot小的移动到前面,后面的都是大于pivot的
+                i += 1
+                lst[i], lst[j] = lst[j], lst[i]
+        # begin位置是基准值, i位置是最后一个比基准值小的下标
+        lst[begin], lst[i] = lst[i], lst[begin]
+        qsort(lst, begin, i - 1)
+        qsort(lst, i + 1, end)
+
+    qsort(lst, 0, len(lst) - 1)    
+
 
 if __name__ == "__main__":
     g = quick_sort([1, 7, 2, 5, 4, 3, 0, 8])
