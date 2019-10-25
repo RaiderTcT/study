@@ -29,6 +29,7 @@ def radix_sort(lst, d):
     rlist = [[] for i in range(10)]
     llen = len(lst)
     # 从关键码的最低位(x.key[-1])开始工作,逐位向上,直至排序完成
+    # 按后一位排序收集完后的序列,再按前一位key排序后,相同key(前一位)的子序列能保持后一位有序
     for m in range(-1, -d-1, -1):
         for j in range(llen):
             # 把一记录分配到桶中
