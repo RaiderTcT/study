@@ -4,8 +4,10 @@
 @Author: Ulysses
 @Date: 2019-10-25 15:03:33
 @Description: 30 seconds of python List
-@LastEditTime: 2019-10-25 22:20:00
+@LastEditTime: 2019-10-27 16:47:45
 '''
+from random import randint
+from copy import deepcopy
 
 
 def all_equal(lst):
@@ -262,3 +264,61 @@ print("none", none([1, 0, None, False], bool))
 # none False
 print("none", none(['', 0, None, False], bool))
 # none True
+
+
+def offset(lst, offset):
+    """移除特定的元素"""
+    return lst[offset:] + lst[:offset]
+
+
+def sample(lst):
+    """随机返回lst中的一个元素"""
+    return lst[randint(0, len(lst)-1)]
+
+
+def shuffle(lst):
+    """
+    random.shuffle 序列随机重组
+    """
+    temp_lst = deepcopy(lst)
+    m = len(temp_lst)
+    while m:
+        m -= 1
+        i = randint(0, m)
+        temp_lst[i], temp_lst[m] = temp_lst[m], temp_lst[i]
+    return temp_lst
+
+
+print("shuffle", shuffle([0, 1, 2, 3, 4, 5]))
+
+
+def some(lst, fn=lambda x: x):
+    """
+    加入fn执行结果中有一个为True返回True,否则为False
+    """
+    return any(map(fn, lst))
+
+
+def symmetric_difference(a, b):
+    """
+    返回两个可迭代对象之间的对称差，而不会过滤出重复的值。
+    """
+    _a = set(a)
+    _b = set(b)
+    return [item for item in _a if item not in _b] + \
+        [item for item in _b if item not in _a]
+
+
+def symmetric_difference_by(a, b, fn):
+    _a = set(map(fn, a))
+    _b = set(map(fn, b))
+    return [item for item in a if fn(item) not in _b] + [item for item in b if fn(item) not in _a]
+
+
+def transpose(lst):
+    """二维矩阵转置"""
+    return list(zip(*lst))
+
+
+print("transpose", transpose([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+# transpose [(1, 4, 7), (2, 5, 8), (3, 6, 9)]
