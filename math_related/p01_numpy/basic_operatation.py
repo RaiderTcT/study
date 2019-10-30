@@ -4,15 +4,39 @@
 @Author: Ulysses
 @Date: 2019-10-28 11:22:46
 @Description: numpy 基础运算
-@LastEditTime: 2019-10-28 15:39:02
+@LastEditTime: 2019-10-30 23:15:32
 '''
 import numpy as np
 
 
 a = np.array([10, 20, 30, 40])
 b = np.arange(4)  # [0, 1, 2, 3]
+c = np.arange(24).reshape((2, 3, 4))
+print(a.shape)  # (4,)
+print(c)
+"""
+[[[ 0  1  2  3]
+  [ 4  5  6  7]
+  [ 8  9 10 11]]
 
+ [[12 13 14 15]
+  [16 17 18 19]
+  [20 21 22 23]]]
+"""
+# 沿着指定轴(shape顺序)
+print(np.amin(c, 1))  # 求一维数组对应的元素的最小值 shape是（2，4）
+"""
+[[ 0  1  2  3]
+ [12 13 14 15]]
+"""
+print(c.min(0))  # 对2个二维数组求最小
+"""
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+"""
 
+# 40 [0 4 8]
 # 一维矩阵
 print("减", a - b)
 # [10 19 28 37]
