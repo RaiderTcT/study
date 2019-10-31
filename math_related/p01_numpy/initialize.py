@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-10-28 09:57:46
 @Description: numpy库的使用
-@LastEditTime: 2019-10-28 15:31:03
+@LastEditTime: 2019-10-31 14:26:09
 '''
 import numpy as np
 
@@ -50,7 +50,7 @@ array1
  [1 1 1]]
 """
 
-array2 = np.empty((2, 3))  # 全空数组
+array2 = np.empty((2, 3))  # 全空数组 数组元素为随机值，因为它们未初始化
 print("array2\n", array2)
 """
 array2
@@ -58,8 +58,34 @@ array2
  [0.00e+000 0.00e+000 0.00e+000]]
 """
 
+# 自定义类型
+x  = np.zeros((2, 2), dtype=[('x', 'i4'), ('y', 'i4')])
+print('自定义类型:\n', x)
+"""
+ [[(0, 0) (0, 0)]
+ [(0, 0) (0, 0)]]
+"""
+
+# python序列转numpy ndarray
+x = [[(1, 2, 3), (2, 3)],[(2, 3, 5), (1,)]]
+a = np.asarray(x)
+print("python序列转ndarray", a)
+
+
+# frombuffer  此函数将缓冲区解释为一维数组
+s = b"Hello World"
+a = np.frombuffer(s, dtype='S1')
+print("从缓冲区读取数据:", a)
+# 从缓冲区读取数据: [b'H' b'e' b'l' b'l' b'o' b' ' b'W' b'o' b'r' b'l' b'd']
+
+# fromiter 从可迭代对象中构建一个ndarray对象(一维数组)
+a = np.fromiter(range(10), dtype='u1')
+print("从可迭代对象中构建:", a)
+# [0 1 2 3 4 5 6 7 8 9]
+
 array3 = np.arange(10, 20, 2)  # 创建连续数组
 print("array3\n", array3)
+
 """
 array3
  [10 12 14 16 18]
@@ -92,6 +118,14 @@ print(array5.reshape((4, 5)))
  [15.26315789 15.78947368 16.31578947 16.84210526 17.36842105]
  [17.89473684 18.42105263 18.94736842 19.47368421 20.        ]]
 """
+
+# logspace 对数刻度
+a = np.logspace(1, 6, num=6, dtype='i4')
+print('对数刻度均匀分布:', a)
+# [     10     100    1000   10000  100000 1000000]
+a = np.logspace(1, 6, num=6, dtype='i1', base=2)
+print("以2为底数:", a)
+# [ 2  4  8 16 32 64]
 
 # 属性
 print(array0.size)  # 元素个数
