@@ -9,8 +9,29 @@
 import numpy as np
 
 
+"""
+1. concatenate 沿着现存的轴连接数据序列
+2. stack 沿着新轴连接数组序列
+3. hstack 水平堆叠序列中的数组（列方向）
+4. vstack 竖直堆叠序列中的数组（行方向）
+"""
+
 A = np.array([1, 2, 3 ,4])
 B = np.array([2, 4, 6, 8])
+
+print("沿新轴0堆叠两个数组\n", np.stack((A, B), axis=0))
+"""
+ [[1 2]
+ [2 4]
+ [3 6]
+ [4 8]]
+"""
+
+print("沿新轴1堆叠两个数组\n", np.stack((A, B), axis=1))
+"""
+[[1 2 3 4]
+ [2 4 6 8]]
+"""
 
 print(np.vstack((A, B)))  # 垂直（行）按顺序堆叠数组。
 """
