@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-10-28 11:22:46
 @Description: numpy 基础运算
-@LastEditTime: 2019-10-31 17:00:07
+@LastEditTime: 2019-11-01 14:11:40
 '''
 import numpy as np
 
@@ -31,6 +31,32 @@ print("对每个元素求三角函数", np.sin(b))
 
 print("逻辑判断", b < 3)
 # [ True  True  True False]
+
+# 倒数
+a = np.array([0.25, 1, 0, 100])
+print("计算倒数 0->inf", np.reciprocal(a))
+# RuntimeWarning: divide by zero encountered in reciprocal
+# 计算倒数 0->inf [4.   1.    inf 0.01]
+b = np.array([100])
+print("大于 1 的整数元素，结果始终为 0:", np.reciprocal(b))
+# [0]
+
+# power
+a = np.array([2, 3, 5, 7])
+b = np.array([1, 2, 2, 1])
+print('power函数:', np.power(a, 2))
+print('power函数:', np.power(a, b))
+"""
+power函数: [ 4  9 25 49]
+power函数: [ 2  9 25  7]
+"""
+# mod remainder
+print("a/b 余数mod", np.mod(a, b))
+print("a/b 余数remainder", np.remainder(a, b))
+"""
+a/b 余数mod [0 1 1 0]
+a/b 余数remainder [0 1 1 0]
+"""
 
 # 广播
 """
@@ -103,8 +129,8 @@ print("点乘 b*a\n", b.dot(a))
 rand_a = np.random.randint(1, 100, (2, 4))  # 随即生成2*4矩阵 范围1-100
 print("rand_a", rand_a)
 print(np.max(rand_a), np.min(rand_a), np.sum(rand_a), np.average(rand_a))
-print("每一行最大", np.max(rand_a, axis=1))  # 1行为单元  0列为单元
-print("每一列之和", np.sum(rand_a, axis=0))
+print("每一行最大", np.max(rand_a, axis=1))  # 一维矩阵内4个数求最大
+print("每一列之和", np.sum(rand_a, axis=0))  # 2个一维矩阵求和
 a = np.arange(13, 1, -1).reshape((3, 4))
 print("中值mean", np.mean(a), a.mean())
 # 中值mean 7.5 7.5
@@ -148,64 +174,55 @@ print("clip\n", np.clip(a, 5, 9))  # 小于最小值或大于最大值的会被�
  [5 5 5 5]]
 """
 
-# 迭代
-a = np.arange(0, 60, 5).reshape(3, 4)
-print(a)
+# 舍入 around floor ceil
+a = np.array([1.0,5.55, 123, 0.567, 25.532])
+print("around:", np.around(a, decimals=1))
+print("around:", np.around(a, decimals=-1))
+print("floor:", np.floor(a))  # 返回不大于输入参数的最大整数
+print("ceil:", np.ceil(a))  # 函数返回输入值的上限(最小整数)
 """
-[[ 0  5 10 15]
- [20 25 30 35]
- [40 45 50 55]]
-"""
-# 迭代的顺序匹配数组的内容布局，而不考虑特定的排序
-for x in np.nditer(a):
-    print(x, end=', ')
-print()
-# 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55,
-for x in np.nditer(a.T):
-    print(x, end=', ')
-print()
-# 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55,
-
-# 设定迭代顺序
-for x in np.nditer(a, order='F'):
-    print(x, end=', ')
-print()
-# 0, 20, 40, 5, 25, 45, 10, 30, 50, 15, 35, 55,
-
-# 使用迭代器修改元素 op_flag
-print(id(a))
-for item in np.nditer(a, op_flags=['readwrite']):
-    print(type(item), item[...])  # <class 'numpy.ndarray'> 0
-    item[...] = 2 * item
-
-print(a)
-"""
-[[  0  10  20  30]
- [ 40  50  60  70]
- [ 80  90 100 110]]
+around: [  1.    5.6 123.    0.6  25.5]
+around: [  0.  10. 120.   0.  30.]
+floor: [  1.   5. 123.   0.  25.]
+ceil: [  1.   6. 123.   1.  26.]
 """
 
-# 外部循环 迭代器遍历对应于每列的一维数组
-for x in np.nditer(a, flags=['external_loop'], order='F'):
-    print(x, end=', ')
-print()
-# [ 0 40 80], [10 50 90], [ 20  60 100], [ 30  70 110],
-
-# 广播迭代 数组 b 被广播到 a 的大小
-b = np.array([1, 2, 3, 4], dtype=int)
-for x, y in np.nditer([a, b]):
-    print(f"{x}:{y}", end=', ')
-print()
-# 0:1, 10:2, 20:3, 30:4, 40:1, 50:2, 60:3, 70:4, 80:1, 90:2, 100:3, 110:4,
-
-
-# tile的使用 Construct an array by repeating A the number of times given by reps.
-repeated = np.tile(b, 2)
-print(repeated)  # [1 2 3 4 1 2 3 4]
-
-repeated = np.tile(b, (2, 2))
-print(repeated)
 """
-[[1 2 3 4 1 2 3 4]
- [1 2 3 4 1 2 3 4]]
+位操作
+1. bitwise_and 对数组元素执行位与操作
+2. bitwise_or 对数组元素执行位或操作
+3. invert 计算位非
+4. left_shift 向左移动二进制表示的位
+5. right_shift 向右移动二进制表示的位
+"""
+a, b = 13, 17
+print("按位与:", np.bitwise_and(a, b))
+print("按位或:", np.bitwise_or(a, b))
+# 按位与: 1
+# 按位或: 29
+
+""" 字符串操作
+1. add() 返回两个 str 或 Unicode 数组的逐个字符串连接
+2. multiply() 返回按元素多重连接后的字符串
+3. center() 返回给定字符串的副本，其中元素位于特定字符串的中央
+4. capitalize() 返回给定字符串的副本，其中只有第一个字符串大写
+5. title() 返回字符串或 Unicode 的按元素标题转换版本
+6. lower() 返回一个数组，其元素转换为小写
+7. upper() 返回一个数组，其元素转换为大写
+8. split() 返回字符串中的单词列表，并使用分隔符来分割
+9. splitlines() 返回元素中的行列表，以换行符分割
+10. strip() 返回数组副本，其中元素移除了开头或者结尾处的特定字符
+11. join() 返回一个字符串，它是序列中字符串的连接
+12. replace() 返回字符串的副本，其中所有子字符串的出现位置都被新
+字符串取代
+13. decode() 按元素调用 str.decode
+14. encode() 按元素调用 str.encode
+"""
+
+a = np.array([['hello'], ['fuck']])
+b = np.array([[' world'], [' you']])
+print("字符相加: \n", np.char.add(a, b))
+"""
+[['hello world']
+ ['fuck you']]
 """
