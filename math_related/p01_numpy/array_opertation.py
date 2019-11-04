@@ -220,3 +220,12 @@ print("利用去重后元素构成原始数据", indices_all, u[indices_all])
 不重复的元素的下标 [0 1 4 5 8 7 3]
 利用去重后元素构成原始数据 [0 1 1 6 2 3 3 5 4] [1 2 2 8 4 5 5 7 6]
 """
+
+# byteswap 大小端切换
+a = np.array([0x0001, 0x0100, 0x2233], dtype=np.int16)
+print(list(map(hex, a)))
+# ['0x1', '0x100', '0x2233']
+a.byteswap(True)  # 原地交换
+print(list(map(hex, a)))
+# ['0x100', '0x1', '0x3322']
+
