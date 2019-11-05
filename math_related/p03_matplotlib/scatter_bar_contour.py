@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-11-04 15:38:46
 @Description: 散点图, 柱状图
-@LastEditTime: 2019-11-04 16:43:02
+@LastEditTime: 2019-11-05 09:35:42
 '''
 import numpy as np
 import matplotlib.pyplot as plt
@@ -52,7 +52,41 @@ def plot_bar():
         plt.text(x+0.2, -y2-0.05, f"{y2:.2}", ha='center', va='top')
     plt.show()
 
+# 等高线图
+def plot_contours():
+    def f(x, y):
+        # 生成各点的高度
+        return (1 - x / 2 + x**5 + y**3)* np.exp(-x**2-y**2)
+
+    n = 256
+    x = np.linspace(-3, 3, n)
+    y = np.linspace(-3, 3, n)
+    # 由坐标向量生成坐标矩阵 二维平面中将每一个x和每一个y分别对应起来，编织成栅格
+    """
+    a=[1 2 3], b= [2 3 4] ->  x, y=meshgrid(a,b)
+    x =
+        1     2     3
+        1     2     3
+        1     2     3
+    y =
+        2     2     2
+        3     3     3
+        4     4     4
+    """
+    X, Y = np.meshgrid(x, y)
+    # 颜色填充 将 f(X,Y) 的值对应到color的暖色组中, 8决定等高线的密集程度
+    plt.contourf(X, Y, f(X, Y), 10, alpha=.75, cmap=plt.cm.hot)
+    # 绘制等高线
+    # len(X)==M, len(Y)==N Z -> (N, M)
+    C = plt.contour(X, Y, f(X, Y), 10, colors='black')
+    # 添加高度数字  inline 数字画在线里
+    plt.clabel(C, inline=True, fontsize=10)  # Label a contour plot.
+    plt.xticks(())
+    plt.yticks(())
+    plt.show()
 
 if __name__ == '__main__':
     # plt_scatter()
-    plot_bar()
+    # plot_bar()
+    plot_contours()
+    
