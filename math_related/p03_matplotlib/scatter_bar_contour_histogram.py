@@ -4,7 +4,7 @@
 @Author: Ulysses
 @Date: 2019-11-04 15:38:46
 @Description: 散点图, 柱状图
-@LastEditTime: 2019-11-05 09:35:42
+@LastEditTime: 2019-11-05 10:59:28
 '''
 import numpy as np
 import matplotlib.pyplot as plt
@@ -85,8 +85,20 @@ def plot_contours():
     plt.yticks(())
     plt.show()
 
+def plot_histogram():
+    # 绘制直方图
+    a = np.array([22,87,5,43,56,73,55,54,11,20,51,5,79,31,27])
+    # 数据的频率分布的图形表示。水平尺寸相等的矩形对应于类间隔，称为bin，变量height对应于频率
+    hist, bins = np.histogram(a, bins=[0,20,40,60,80,100])
+    print(hist)  # [3, 4, 5, 2, 1] 各个区间段数字的次数
+    print(bins)  # [0,20,40,60,80,100]
+
+    plt.hist(a, bins=[0, 20, 40, 60, 80, 100])
+    plt.title("histogram")
+    plt.show()
+
 if __name__ == '__main__':
     # plt_scatter()
     # plot_bar()
-    plot_contours()
-    
+    # plot_contours()
+    plot_histogram()
