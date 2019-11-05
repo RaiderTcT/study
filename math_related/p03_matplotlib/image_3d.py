@@ -47,8 +47,9 @@ def plot_3d(file_path):
     ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap('rainbow'))
     # 设置投影 (等高线)
     # offset 如果指定，则在垂直于zdir的平面上的此位置(z=offset平面)绘制轮廓线的投影
-    ax.contourf(X, Y, Z, offset=-2, cmap=plt.get_cmap('rainbow'))
-    # ax.contourf(X, Y, Z, zidr='x', offset=-2, cmap=plt.get_cmap('rainbow'))
+    ax.contourf(X, Y, Z, zidr='z', offset=-2, cmap=plt.get_cmap('rainbow'))
+    # 调整角度 仰角 方位角 (°)
+    ax.view_init(elev=10, azim=125)
     plt.savefig(file_path)
     plt.show()
 
