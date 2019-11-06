@@ -38,3 +38,15 @@ print(b)
  [3. 4. 5.]
  [6. 7. 8.]]
 """
+
+# c = np.loadtxt(
+#     'D:\workspace\study\math_related\p01_numpy\stocks.csv',
+#     delimiter=',', dtype=[('name', 'S20'), ('price', float), ('date', 'S20'), ('time', 'S20'), ('delta', float), ('shares', int)])
+# print(c)
+
+# 使用unpack 返回结果是解开的
+p, d = np.loadtxt(
+    r"D:\workspace\study\math_related\p01_numpy\stocks.csv",
+    usecols=(1, -2), delimiter=',', unpack=True)
+print(p)
+print(d)
