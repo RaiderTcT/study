@@ -73,5 +73,18 @@ print(a)
 a_copy1 = a[[1,2], [0, 1]]   # 用 index 选
 a_copy2 = a[[True, True, False], [False, True]]  # 用 mask
 a_copy3 = a[[1,2], :]        # 虽然 1,2 的确连在一起了, 但是他们确实是 copy
-a_copy4 = a[a[1,:] != 0, :]  # fancy indexing
-a_copy5 = a[np.isnan(a), :]  # fancy indexing
+# fancy indexing 花式索引 利用整数数组进行索引 总是一维的
+
+arr = np.arange(32).reshape(8, 4)
+print("8*4:\n", arr)
+print("花式索引, 结果总为一维:\n", arr[[1, 5, 7, 2], [0, 3, 1, 2]])
+#  [ 4 23 29 10]
+print("希望得到矩形区域:\n", arr[[1, 5, 7, 2]][:, [0, 3, 1, 2]])
+"""
+希望得到矩形区域:
+ [[ 4  7  5  6]
+ [20 23 21 22]
+ [28 31 29 30]
+ [ 8 11  9 10]]
+"""
+
