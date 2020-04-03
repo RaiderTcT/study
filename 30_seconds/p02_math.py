@@ -4,18 +4,18 @@
 @Author: Ulysses
 @Date: 2019-10-28 08:12:32
 @Description: math 相关
-@LastEditTime: 2019-10-28 09:46:32
+@LastEditTime: 2020-04-03 09:01:08
 '''
+# %%
 import math
 from functools import reduce
-
 
 def average(*args):
     return sum(args, 0.0) / len(args)
 
 
 print("average", average(*[1, 2, 3]))
-
+# %%
 
 def average_by(lst, fn=lambda x: x):
     """先执行fn后对结果求平均"""
@@ -31,7 +31,7 @@ def clamp_number(num, a, b):
 print("clamp_number", clamp_number(5, 1, 4))
 print("clamp_number", clamp_number(3.5, 1, 4,))
 print("clamp_number", clamp_number(0, 4, 1))
-
+# %%
 
 def degrees_to_rads(deg):
     """度->弧度"""
@@ -56,7 +56,7 @@ def factorial(num):
         raise ValueError("需要一个正整数")
     return 1 if num == 0 else num * factorial(num - 1)
 
-
+# %%
 def fibonacci(n):
     """
     fibonacci序列 0 , 1, 1, 2, 3, 5
@@ -72,7 +72,7 @@ def fibonacci(n):
 
 print("fibonacci", fibonacci(7))
 
-
+# %%
 def fibonacci_yield(n):
     a, b, count = 0, 1, 0
     while n > count:
@@ -85,7 +85,7 @@ for i in fibonacci_yield(7):
     print(i, end=', ')
 print()
 
-
+# %%
 def gcd(numbers):
     """
     多个数的最大共约数
@@ -96,7 +96,7 @@ def gcd(numbers):
 print("gcd", gcd([100, 220, 80]))
 # gcd 20
 
-
+# %%
 def in_range(n, start, end=0):
     """n是否在(start, end)范围 默认从(0, start)
     """
@@ -152,4 +152,3 @@ def min_by(lst, fn):
 
 def sum_by(lst, fn):
     return sum(map(fn,lst))
-    
