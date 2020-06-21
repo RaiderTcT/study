@@ -4,11 +4,8 @@
 @Author: Ulysses
 @Date: 2019-10-25 15:03:33
 @Description: 30 seconds of python List
-@LastEditTime: 2019-10-27 16:47:45
+@LastEditTime: 2020-04-03 08:48:59
 '''
-from random import randint
-from copy import deepcopy
-
 
 def all_equal(lst):
     """
@@ -18,7 +15,6 @@ def all_equal(lst):
     """
     return lst[1:] == lst[:-1]
 
-
 def all_unique(lst):
     """序列中所有的元素都是唯一的"""
     return len(lst) == len(set(lst))
@@ -27,8 +23,8 @@ def all_unique(lst):
 def bifurcate(lst, filter):
     """根据filter中bool值对lst进行分组"""
     return [
-        [x for i, x in enumerate(lst) if filter[i] is True],
-        [x for i, x in enumerate(lst) if filter[i] is False],
+        [x for i, x in enumerate(lst) if filter[i] == True],
+        [x for i, x in enumerate(lst) if filter[i] == False],
     ]
 
 
@@ -38,34 +34,30 @@ def bifurcate_by(lst, f):
         [x for x in lst if f(x)],
         [x for x in lst if not f(x)],
     ]
-
-
+# %%
 def chunk(lst, size):
     """
     将lst分割成size大小的子块
     """
     from math import ceil
     # ceil(x) 大于x值的最小整数
-    return list(
-        map(
-            lambda x: lst[x * size:x * size + size],
-            list(range(0, ceil(len(lst) / size)))  # [0, 1]
-        ))
-
+    return list(map(
+        lambda x: lst[x * size:x * size + size],
+        list(range(0, ceil(len(lst) / size)))  # [0, 1]
+    ))
 
 print("chunk", chunk([1, 2, 3, 4, 5, 6, 7], 3))
 # [[1, 2, 3], [4, 5, 6], [7]]
-
-
+#%%
 def compact(lst):
     """
-    使用filter取出lst中的falsey数据(None, 0, ''和False)
+    使用filter取出lst中not falsey数据(排除None, 0, ''和False)
     bool(lst[i])
     """
     return list(filter(bool, lst))
-
-
-def count_by(lst, fn=lambda x: x):
+compact([1, 2, 0, '', None, False])
+#%%
+def count_by(lst, fn=lambda x:x):
     """
     根据给定函数,将lst元素分组,并返回各组的元素数量
     """
@@ -74,22 +66,18 @@ def count_by(lst, fn=lambda x: x):
         key[result] = 1 if result not in key else key[result] + 1
     return key
 
-
 print("count_by", count_by(['111', '22', 'three', 'one'], len))
 # {3: 2, 2: 1, 5: 1}
-
-
+#%%
 def count_occorences(lst, value):
     """
     计算lst中某一值出现的次数
     """
     return len([x for x in lst if x == value and type(x) == type(value)])
 
-
 print("count_occorences", count_occorences([1, 2, 3, 1, 2, 1], 1))
 # count_occorences 3
-
-
+#%%
 def deep_flatten(lst):
     """扁平化嵌套的可迭代对象"""
     from collections.abc import Iterable
@@ -99,19 +87,16 @@ def deep_flatten(lst):
         else:
             yield e
 
-
-print("deep_flatten", list(deep_flatten([1, [1, 2, 4, [100, 111]], 5, [8,
-                                                                       9]])))
+print("deep_flatten", list(deep_flatten([1, [1, 2, 4, [100, 111]], 5, [8, 9]])))
 # deep_flatten [1, 1, 2, 4, 100, 111, 5, 8, 9]
 
-
+#%%
 def difference(a, b):
     """
     返回两个可迭代对象的差异
     """
     _b = set(b)
     return [item for item in a if item not in _b]
-
 
 def difference_by(a, b, fn):
     """
@@ -120,12 +105,10 @@ def difference_by(a, b, fn):
     _b = set(map(fn, b))
     return [item for item in a if fn(item) not in _b]
 
-
 from math import floor
 
 print("difference_by", difference_by([1.1, 2.1, 3.7, 5], [2.2, 3.1], floor))
 # difference_by [1.1, 5]
-
 
 def every(lst, fn=lambda x: x):
     """
@@ -133,38 +116,31 @@ def every(lst, fn=lambda x: x):
     """
     # all 所有对象bool()都为True
     return all(map(fn, lst))
-
-
+# %%
 def every_nth(lst, nth):
     """
     lst每隔nth取一个元素,构成一个新序列
     """
-    return lst[nth - 1::nth]
-
+    return lst[nth-1::nth]
 
 print("every_nth", every_nth(list(range(10)), 3))
 # every_nth [2, 5, 8]
-
-
+# %%
 def filter_non_unique(lst):
     """
     过滤出lst中出现不止一次的元素, 剩出现一次的
     """
     return [item for item in lst if lst.count(item) == 1]
 
-
 print("filter_non_unique", filter_non_unique([1, 2, 2, 4, 3, 4, 6]))
 # filter_non_unique [1, 3, 6]
-
-
+# %%
 def filter_unique(lst):
     return list(set(item for item in lst if lst.count(item) > 1))
 
-
 print("filter_unique", filter_unique([1, 2, 2, 4, 3, 4, 6]))
 # filter_unique [2, 4]
-
-
+# %%
 def flatten(lst):
     """二重列表打开"""
     # for y in lst:
@@ -172,11 +148,11 @@ def flatten(lst):
 
     return [x for y in lst for x in y]
 
-
-print("flatten", flatten([[1, 2, 3], [4, 5, 6]]))
+print("flatten", flatten([[1, 2, 3], [4, 5, 6]]),
+    list(deep_flatten([[1, 2, 3], [4, 5, 6]])))
 # flatten [1, 2, 3, 4, 5, 6]
-
-
+# %%
+from math import floor
 def group_by(lst, fn):
     """根据函数fn执行结果对lst进行分组"""
     # d = {}
@@ -185,140 +161,16 @@ def group_by(lst, fn):
     # return d
     return {key: [e for e in lst if fn(e) == key] for key in map(fn, lst)}
 
-
 print("group_by", group_by([6.1, 6.2, 4.2, 3.1], floor))
 # group_by {6: [6.1, 6.2], 4: [4.2], 3: [3.1]}
-
-
+# %%
 def has_duplicates(lst):
     """是否有重复的元素"""
     return len(lst) != len(set(lst))
 
-
 def initial_2d_list(w, h, value=None):
     """初始化一个w*h的二维数组"""
-    return [[value] * h for _ in range(w)]
-
+    return [[value]*h for _ in range(w)]
 
 print("initial_2d_list", initial_2d_list(3, 4, 0))
 # [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-
-
-def intersection(l1, l2):
-    """2个序列中相同的元素"""
-    _a, _b = set(l1), set(l2)
-    return list(_a & _b)
-
-
-def intersection_by(a, b, fn):
-    """根据执行fn函数结果 返回相同元素"""
-    _b = set(map(fn, b))
-    return [item for item in a if fn(item) in _b]
-
-
-print(
-    "intersection_by",
-    intersection_by([1.1, 2.1, 3.1, 4.1], [2.4, 3.3], floor))
-# intersection_by [2.1, 3.1]
-
-
-def longest_item(*args):
-    """获取可迭代对象(或者具有len方法)中最长的一个"""
-    return max(args, key=len)
-
-
-print("longest_item", longest_item([1, 2, 3, 4], 'abcdefg', {'a': 1}))
-# longest_item abcdefg
-
-
-def max_n(lst, n=1):
-    """获取序列中最大的n个"""
-    return sorted(lst, reverse=True)[:n]
-
-
-def min_n(lst, n=1):
-    """获取序列中最小的n个"""
-    return sorted(lst, reverse=False)[:n]
-
-
-def most_frequent(lst):
-    """寻找序列中出现次数最多的元素"""
-    return max(set(lst), key=lst.count)
-
-
-print("most_frequent", most_frequent([1, 2, 2, 1, 3, 1]))
-# most_frequent 1
-
-
-def none(lst, fn):
-    """
-    Returns False if the provided function returns True for at least one
-    element in the list, True otherwise
-    全部为False ->True
-    超过一个为True -> False
-    """
-    return all(not fn(x) for x in lst)
-
-
-print("none", none([1, 0, None, False], bool))
-# none False
-print("none", none(['', 0, None, False], bool))
-# none True
-
-
-def offset(lst, offset):
-    """移除特定的元素"""
-    return lst[offset:] + lst[:offset]
-
-
-def sample(lst):
-    """随机返回lst中的一个元素"""
-    return lst[randint(0, len(lst)-1)]
-
-
-def shuffle(lst):
-    """
-    random.shuffle 序列随机重组
-    """
-    temp_lst = deepcopy(lst)
-    m = len(temp_lst)
-    while m:
-        m -= 1
-        i = randint(0, m)
-        temp_lst[i], temp_lst[m] = temp_lst[m], temp_lst[i]
-    return temp_lst
-
-
-print("shuffle", shuffle([0, 1, 2, 3, 4, 5]))
-
-
-def some(lst, fn=lambda x: x):
-    """
-    加入fn执行结果中有一个为True返回True,否则为False
-    """
-    return any(map(fn, lst))
-
-
-def symmetric_difference(a, b):
-    """
-    返回两个可迭代对象之间的对称差，而不会过滤出重复的值。
-    """
-    _a = set(a)
-    _b = set(b)
-    return [item for item in _a if item not in _b] + \
-        [item for item in _b if item not in _a]
-
-
-def symmetric_difference_by(a, b, fn):
-    _a = set(map(fn, a))
-    _b = set(map(fn, b))
-    return [item for item in a if fn(item) not in _b] + [item for item in b if fn(item) not in _a]
-
-
-def transpose(lst):
-    """二维矩阵转置"""
-    return list(zip(*lst))
-
-
-print("transpose", transpose([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
-# transpose [(1, 4, 7), (2, 5, 8), (3, 6, 9)]

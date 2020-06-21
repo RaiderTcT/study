@@ -1,6 +1,7 @@
 """
 类创建析构
 """
+# %%
 import types
 
 
@@ -17,8 +18,8 @@ class Animal(object):
 ani_d = Animal(10)
 
 class Dog(Animal):
-    def __init__(self):
-        super(Dog, self).__init__()
+    def __init__(self, speed):
+        super(Dog, self).__init__(speed)
 
     def go(self):
         print("gogogo\n")
@@ -26,11 +27,31 @@ class Dog(Animal):
     def run(self):
         print('dog is running\n')
 
+def set_age(animal, age):
+    animal.age = age
 
+
+dog = Dog(111)
+dog.run()
+# 给实例绑定方法
+dog.set_age = types.MethodType(set_age, dog)
+print(type(dog))
+print(Animal.count)
+
+dog.set_age(23)
+# 给类绑定方法
+Animal.set_age = types.MethodType(set_age, Animal)
+
+
+# %%
 class Timer(object):
     def run(self):
         print('time is running\n')
 
+time = Timer()
+# 类的方法调用 time.run()
+Timer.run(time,)
+run_twice(time)
 # 动态语言
 
 
@@ -38,11 +59,7 @@ def run_twice(args):
     args.run()
     args.run()
 
-
-def set_age(self, age):
-    self.age = age
-
-
+# %%
 # __开头 私有变量private
 class Screen(object):
     @property
@@ -68,16 +85,29 @@ class Screen(object):
     def __len__(self):
         return 1024
 
+s = Screen()
+s.width = 1024
+s.height = 768
+print(f"***{len(s)}***")
+print(f"******")
+print('resolution =', s.resolution)
+if s.resolution == 786432:
+    print('测试通过!')
+else:
+    print('测试失败!')
+
+# %%
 class Fib(object):
-    def __init__(self):
+    def __init__(self, end):
         self.a, self.b = 0, 1  # 初始化两个计数器a，b
+        self.end = end
 
     def __iter__(self):
         return self  # 实例本身就是迭代对象，故返回自己
 
     def __next__(self):
         self.a, self.b = self.b, self.a + self.b  # 计算下一个值
-        if self.a > 100:  # 退出循环的条件
+        if self.a > self.end:  # 退出循环的条件
             raise StopIteration()
         return self.a  # 返回下一个值
 
@@ -99,8 +129,30 @@ class Fib(object):
                     L.append(a)
                 a, b = b, a + b
             return L
+for n in Fib(1000):
+    print(n, end=' ')
+print()
+print(Fib(1000)[9])
+print(Fib(1000)[1:7])
+
+# %%
+class Book(object):
+    def __new__(cls, title):
+        print('__new__')
+        return super(Book, cls).__new__(cls)
+
+    def __init__(self, title):
+        print("__init__")
+        super(Book, self).__init__()
+        self.title = title
 
 
+
+book = Book('the End of World')
+print(book.title)
+
+
+# %%
 # 链式调用
 class Chain(object):
 
@@ -119,51 +171,9 @@ class Chain(object):
     __repr__ = __str__
 
 
-class Book(object):
-    def __new__(cls, title):
-        print('__new__')
-        return super(Book, cls).__new__(cls)
-
-    def __init__(self, title):
-        print("__init__")
-        super(Book, self).__init__()
-        self.title = title
 
 
-if __name__ == "__main__":
-    book = Book('the End of World')
-    print(book.title)
-    dog = Dog()
-    dog.run()
-    # 给实例绑定方法
-    dog.set_age = types.MethodType(set_age, dog)
-    time = Timer()
-    # 类的方法调用 time.run()
-    Timer.run(time,)
-    run_twice(time)
-    print(type(dog))
-    print(Animal.count)
-    dog.set_age(23)
-    # 给类绑定方法
-    Animal.set_age = types.MethodType(set_age, Animal)
-
-    print(dog.age)
-    s = Screen()
-    s.width = 1024
-    s.height = 768
-    print(f"***{len(s)}***")
-    print(f"******")
-    print('resolution =', s.resolution)
-    if s.resolution == 786432:
-        print('测试通过!')
-    else:
-        print('测试失败!')
-
-    for n in Fib():
-        print(n)
-    print(Fib()[9])
-    print(Fib()[1:7])
-    print(Chain().status.user.timeline.list)
+print(Chain().status.user.timeline.list)
 
 # 步骤：
 # 1、Chain是类名，对它进行“()”运算，即调用__init__(self)(这个有讲过哦),会生成一个实例c1，c1=Chain(path='')。
@@ -178,3 +188,6 @@ if __name__ == "__main__":
 # 6、对实例c5进行“回车键”运算，即调用__repr__(self)，返回c5._path,即输出'/status/user/timeline/list'。
 
 
+
+
+#%%

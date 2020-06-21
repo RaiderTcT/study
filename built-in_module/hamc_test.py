@@ -1,9 +1,11 @@
+# %%
 import hmac, random
 message = b'hello world'
 key = b'ulysses'
 h = hmac.new(key, message, digestmod='MD5')
-print(h.hexdigest())
-
+h1 = hmac.new(b'a2dd', message, 'MD5')
+print(h.hexdigest(), h1.hexdigest())
+# %%
 # 在计算哈希的过程中，把key混入计算过程中
 def hmac_md5(key, s):
     return hmac.new(key.encode('utf-8'), s.encode('utf-8'), 'MD5').hexdigest()
