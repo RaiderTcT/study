@@ -662,3 +662,29 @@ change(l1, l2)
 print(l1)
 print(l2)
 print(sum(l1), sum(l2))
+#%%
+# 新的默认列表仅仅只在函数被定义时创建一次。随后当 extendList 没有被指定的列表参数调用的时候，其使用的是同一个列表
+def extendList(val, lst=[]):
+    lst.append(val)
+    return lst
+
+list1 = extendList(10)
+list2 = extendList(123,[])
+list3 = extendList('a')
+print('l1= ', list1)
+print('l2= ', list2)
+print('l3= ', list3)
+
+
+#%%
+def extendList(val, lst=None):
+    if lst is None:
+        lst = []
+    lst.append(val)
+    return lst
+list1 = extendList(10)
+list2 = extendList(123,[])
+list3 = extendList('a')
+print('l1= ', list1)
+print('l2= ', list2)
+print('l3= ', list3)
