@@ -1,6 +1,23 @@
 from xml.parsers.expat import ParserCreate
 import requests
+from xml.etree import ElementTree as etree
 
+class LineNumberParser(etree.XMLParser):
+    def _start(self, *args, **kwargs):
+        element = super()._start(*args, **kwargs)
+        element.start_line_number = self.parser.CurrentLineNumber
+        element.start_column_number = self.parser.CurrentColumnNumber
+        element.start_byte_index = self.parser.CurrentByteIndex
+        return element
+
+    def _end(self, *args, **kwargs):
+        element = super()._end(*args, **kwargs)
+        element.end_line_number = self.parser.CurrentLineNumber
+        element.end_column_number = self.parser.CurrentColumnNumber
+        element.end_byte_index = self.parser.CurrentByteIndex
+        return element
+
+# tree = etree.parse(file, parser=LineNumberParser())
 
 class Weather(object):
     def __init__(self, city=None, forecast=None):

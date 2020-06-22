@@ -623,3 +623,68 @@ i, x[i] = 1, 2
 print(x)  # [0, 2]
 
 # %%
+"""
+有两个序列a,b，大小都为n,序列元素的值任意整数，无序；要求：通过交换a,b 中的元素，使[序列a 元素的和]与[序列b 元素的和]之间的差最小。
+"""
+"""
+当前数组a和数组b的和之差为A = sum(a) - sum(b)，a的第i个元素和b的第j个元素交换后，a和b的和之差为 A’ = sum(a) - a[i] + b[j] - （sum(b) - b[j] + a[i]) = sum(a) - sum(b) - 2 (a[i] - b[j]) = A - 2 (a[i] - b[j]) 设x = a[i] - b[j]，那么 A’ = |A - 2x|，当然A’ 越小也好，所以当x 在 (0,A)之间时，做这样的交换才能使得交换后的a和b的和之差变小，x越接近A/2效果越好,如果找不到在(0,A)之间的x，则当前的a和b就是答案。 所以算法大概如下：在a和b中寻找使得x在(0,A)之间并且最接近A/2的i和j，交换相应的i和j元素，重新计算A后，重复前面的步骤直至找不到(0,A)之间的x为止。
+"""
+
+
+# l1 =[random.randint(1, 100) for i in range(10)]
+# l2 = list(range(10))
+l1 = [100,99,98,1,2, 3]
+l2 = [1, 2, 3, 4,5,40]
+
+def change(l1, l2):
+    flag = True
+    n = len(l1)
+    while flag:
+        flag = False
+        best_position = ()
+        min_diff = float('inf')
+        for i in range(n):
+            for j in range(n):
+                m = l1[i] - l2[j]
+                diff_sum = abs(sum(l1) - sum(l2))
+                diff_sum_2_m = abs(m - diff_sum / 2)
+                if 0<m<diff_sum and diff_sum_2_m < min_diff:
+                    min_diff = diff_sum_2_m
+                    best_position = (i, j)
+                    # l1[i], l2[j] = l2[j], l1[i]
+                    flag = True
+        if flag:
+            i, j = best_position
+            l1[i], l2[j] = l2[j], l1[i]
+
+
+change(l1, l2)
+print(l1)
+print(l2)
+print(sum(l1), sum(l2))
+#%%
+# 新的默认列表仅仅只在函数被定义时创建一次。随后当 extendList 没有被指定的列表参数调用的时候，其使用的是同一个列表
+def extendList(val, lst=[]):
+    lst.append(val)
+    return lst
+
+list1 = extendList(10)
+list2 = extendList(123,[])
+list3 = extendList('a')
+print('l1= ', list1)
+print('l2= ', list2)
+print('l3= ', list3)
+
+
+#%%
+def extendList(val, lst=None):
+    if lst is None:
+        lst = []
+    lst.append(val)
+    return lst
+list1 = extendList(10)
+list2 = extendList(123,[])
+list3 = extendList('a')
+print('l1= ', list1)
+print('l2= ', list2)
+print('l3= ', list3)
