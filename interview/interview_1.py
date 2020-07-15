@@ -4,7 +4,7 @@
 @Description: 
 @Date: 2020-02-28 15:21:56
 @LastEditors: Ulysses
-@LastEditTime: 2020-06-22 19:24:05
+@LastEditTime: 2020-07-01 14:45:29
 '''
 """interview"""
 import threading
@@ -648,3 +648,29 @@ list3 = extendList('a')
 print('l1= ', list1)
 print('l2= ', list2)
 print('l3= ', list3)
+# %%
+with open("interview_1.py", 'r') as f:
+    print(f.readline())
+    for i in f.readlines():
+        print(i)
+
+# %%
+l1 = [1, 2 ,3, 3]
+l2 = [4, 5, 6, 7, 8]
+# for l1, l2 in zip(l1, l2):
+#     print(l1, l2)
+l1.remove(3)
+l1
+# %%
+l = '10.0.0.2 | 18 | 248'
+l.split(' | ')
+
+# %%
+def factorial(n):
+    if n == 1:
+        return 1
+    return n*factorial(n-1)
+
+
+
+# %%
